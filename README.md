@@ -1,13 +1,13 @@
 # The-amplicon-sequencing-analysis-of-big-dataset
 
 #Merge paired-end reads into a single read, see https://github.com/jsh58/NGmerge
->NGmerge -1 sample1_R1.fastq.gz -2 sample1_R2.fastq.gz -o sample1.fastq.gz
+>NGmerge -1 sample1_R1.fastq.gz -2 sample1_R2.fastq.gz -o ./merge/sample1.fastq.gz
 
 #Quality trimming and adapter clipping of one sample, see https://github.com/usadellab/Trimmomatic for installation
->trimmomatic SE -threads 10 -phred33 sample1.fastq.gz sample1_trim.fastq.gz ILLUMINACLIP:TruSeq3-SE.fa:2:30:10 LEADING:10 TRAILING:10 SLIDINGWINDOW:4:20 MINLEN:50
+>trimmomatic SE -threads 10 -phred33 ./merge/sample1.fastq.gz ./trimm/sample1_trim.fastq.gz ILLUMINACLIP:TruSeq3-SE.fa:2:30:10 LEADING:10 TRAILING:10 SLIDINGWINDOW:4:20 MINLEN:50
 
 #Do the trimming step for multiple sample 
->for i in `ls ./file/*.fastq.gz`
+>for i in `ls ./merge/*.fastq.gz`
 >
 >do
 >
@@ -18,3 +18,18 @@
 >done > command.trimmomatic.list
 >
 >sh command.trimmomatic.list 
+
+#Quality assessment, see https://github.com/s-andrews/FastQC
+> fastqc ./trimm/*fastq.gz -t 2
+
+#**Analysis using QIIME2 version 2024.5**
+> qiime tools import  --type 'SampleData[SequencesWithQuality]' --output-path ./demux-single-end.qza  --input-format CasavaOneEightSingleLanePerSampleDirFmt --input-path ./trimm/
+
+#Quality filtering with default parameters
+> qiime quality-filter q-score --i-demux demux-single-end.qza --o-filtered-sequences demux_filtered.qza --o-filter-stats demux-filter-stats.qza
+
+#Viewing filter quality of metadata
+> qiime metadata tabulate --m-input-file demux-filter-stats.qza --o-visualization demux-filter-stats.qzv
+
+#Apply Deblur workflow for denoise based on demux-filter-stats.qzv
+> nohup qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza --p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza --o-table table-deblur.qza --p-sample-stats --o-stats deblur-stats.qza --p-jobs-to-start 10  &
