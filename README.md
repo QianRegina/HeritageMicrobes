@@ -74,5 +74,6 @@
 >--i-table table-cr-97.qza --p-sampling-depth 3012 &
 
 #Export the table for diversity and UMAP analysis
->qiime tools export --input-path resampled_table_97.qza --output-path ./ 
+>qiime tools export --input-path resampled_table_97.qza --output-path ./
+>
 >biom convert -i feature-table.biom -o resampled_table_97.tsv --to-tsv
