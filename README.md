@@ -69,7 +69,7 @@
 #Obtain Taxnomic table
 >qiime tools export --input-path taxonomy_97.qza --output-path ./ 
 
-#Extract optimum depth. Based on deblur-stats.qzv to comfirm the value of sampling-depth (eg. 3012)
+#Extract optimum depth.The value of sampling-depth (eg. 3012) is comfirmed based on deblur-stats.qzv
 >qiime feature-table rarefy --o-rarefied-table ./resampled_table_97.qza \
 >--i-table table-cr-97.qza --p-sampling-depth 3012 &
 
