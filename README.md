@@ -22,7 +22,8 @@
 #Quality assessment, see https://github.com/s-andrews/FastQC
 >fastqc ./trimm/*fastq.gz -t 2
 
-#**Analysis using QIIME2 version 2024.5**
+#**Analysis using QIIME2 version 2024.5**, see https://github.com/qiime2
+
 #inpot data
 >qiime tools import  --type 'SampleData[SequencesWithQuality]' \
 >--output-path ./demux-single-end.qza  \
