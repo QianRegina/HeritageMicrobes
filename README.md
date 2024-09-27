@@ -33,4 +33,16 @@
 >qiime metadata tabulate --m-input-file demux-filter-stats.qza --o-visualization demux-filter-stats.qzv
 
 #Apply Deblur workflow for denoise based on demux-filter-stats.qzv
->nohup qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza --p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza --o-table table-deblur.qza --p-sample-stats --o-stats deblur-stats.qza --p-jobs-to-start 10  &
+>qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza --p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza --o-table table-deblur.qza --p-sample-stats --o-stats deblur-stats.qza --p-jobs-to-start 10
+
+#Generate summary statistics for Deblur results
+>qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
+
+#cluster sequences according to closed references
+> qiime vsearch cluster-features-closed-reference --i-table table-deblur.qza --i-sequences rep-seqs-deblur.qza \
+> --i-reference-sequences ./database/silva-138.1-ssu-nr97-seqs-derep.qza \
+> --p-perc-identity 0.97 --o-clustered-table table-cr-97.qza \
+> --o-clustered-sequences repseqs-cr-97.qza --o-unmatched-sequences unmatched-cr-97.qz  --p-threads 10
+
+
+
