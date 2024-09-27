@@ -52,5 +52,26 @@
  --p-perc-identity 0.97 --o-clustered-table table-cr-97.qza \
  --o-clustered-sequences repseqs-cr-97.qza --o-unmatched-sequences unmatched-cr-97.qz  --p-threads 10
 
+#Obtain OTU table
+>qiime tools export --input-path table-cr-97.qza --output-path ./
+>biom convert -i feature-table.biom -o table-cr-97.tsv --to-tsv
 
+#Extract represented sequence
+>qiime tools export --input-path repseqs-cr-97.qza --output-path ./ 
+>mv dna-sequences.fasta repseqs-cr-97.fasta
 
+#Taxnomy annotation
+>qiime feature-classifier classify-sklearn --i-classifier database/silva-138.1-ssu-nr97-classifier.qza \
+--i-reads repseqs-cr-97.qza --o-classification taxonomy_97.qza \
+--p-n-jobs 10 --p-reads-per-batch 1000
+
+#Obtain Taxnomic table
+>qiime tools export --input-path taxonomy_97.qza --output-path ./ 
+
+#Extract optimum depth. Based on deblur-stats.qzv to comfirm the value of sampling-depth (eg. 3012)
+>qiime feature-table rarefy --o-rarefied-table ./resampled_table_97.qza \
+>--i-table table-cr-97.qza --p-sampling-depth 3012 &
+
+#Export the table for diversity and UMAP analysis
+>qiime tools export --input-path resampled_table_97.qza --output-path ./ 
+>biom convert -i feature-table.biom -o resampled_table_97.tsv --to-tsv
