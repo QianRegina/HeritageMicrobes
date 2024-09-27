@@ -20,16 +20,17 @@
 >sh command.trimmomatic.list 
 
 #Quality assessment, see https://github.com/s-andrews/FastQC
-> fastqc ./trimm/*fastq.gz -t 2
+>fastqc ./trimm/*fastq.gz -t 2
 
 #**Analysis using QIIME2 version 2024.5**
-> qiime tools import  --type 'SampleData[SequencesWithQuality]' --output-path ./demux-single-end.qza  --input-format CasavaOneEightSingleLanePerSampleDirFmt --input-path ./trimm/
+#inpot data
+>qiime tools import  --type 'SampleData[SequencesWithQuality]' --output-path ./demux-single-end.qza  --input-format CasavaOneEightSingleLanePerSampleDirFmt --input-path ./trimm/
 
 #Quality filtering with default parameters
-> qiime quality-filter q-score --i-demux demux-single-end.qza --o-filtered-sequences demux_filtered.qza --o-filter-stats demux-filter-stats.qza
+>qiime quality-filter q-score --i-demux demux-single-end.qza --o-filtered-sequences demux_filtered.qza --o-filter-stats demux-filter-stats.qza
 
 #Viewing filter quality of metadata
-> qiime metadata tabulate --m-input-file demux-filter-stats.qza --o-visualization demux-filter-stats.qzv
+>qiime metadata tabulate --m-input-file demux-filter-stats.qza --o-visualization demux-filter-stats.qzv
 
 #Apply Deblur workflow for denoise based on demux-filter-stats.qzv
-> nohup qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza --p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza --o-table table-deblur.qza --p-sample-stats --o-stats deblur-stats.qza --p-jobs-to-start 10  &
+>nohup qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza --p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza --o-table table-deblur.qza --p-sample-stats --o-stats deblur-stats.qza --p-jobs-to-start 10  &
