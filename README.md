@@ -8,7 +8,6 @@
 
 #Do the trimming step for multiple sample 
 >for i in `ls ./merge/*.fastq.gz`
->
 >do
 >
 >x=${i/*\//}
