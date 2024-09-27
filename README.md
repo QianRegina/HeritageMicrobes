@@ -30,7 +30,9 @@
 >--input-path ./trimm/
 
 #Quality filtering with default parameters
->qiime quality-filter q-score --i-demux demux-single-end.qza --o-filtered-sequences demux_filtered.qza --o-filter-stats demux-filter-stats.qza
+>qiime quality-filter q-score --i-demux demux-single-end.qza \
+>--o-filtered-sequences demux_filtered.qza \
+>--o-filter-stats demux-filter-stats.qza
 
 #Viewing filter quality of metadata
 >qiime metadata tabulate --m-input-file demux-filter-stats.qza --o-visualization demux-filter-stats.qzv
