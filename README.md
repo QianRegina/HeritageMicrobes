@@ -36,7 +36,10 @@
 >qiime metadata tabulate --m-input-file demux-filter-stats.qza --o-visualization demux-filter-stats.qzv
 
 #Apply Deblur workflow for denoise based on demux-filter-stats.qzv
->qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza --p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza --o-table table-deblur.qza --p-sample-stats --o-stats deblur-stats.qza --p-jobs-to-start 10
+>qiime deblur denoise-16S --i-demultiplexed-seqs demux_filtered.qza \
+>--p-trim-length 205 --o-representative-sequences rep-seqs-deblur.qza \
+>--o-table table-deblur.qza --p-sample-stats \
+>--o-stats deblur-stats.qza --p-jobs-to-start 10
 
 #Generate summary statistics for Deblur results
 >qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
