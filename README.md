@@ -39,10 +39,10 @@
 >qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
 
 #cluster sequences according to closed references
-> qiime vsearch cluster-features-closed-reference --i-table table-deblur.qza --i-sequences rep-seqs-deblur.qza \\
-> --i-reference-sequences ./database/silva-138.1-ssu-nr97-seqs-derep.qza \\
-> --p-perc-identity 0.97 --o-clustered-table table-cr-97.qza \\
-> --o-clustered-sequences repseqs-cr-97.qza --o-unmatched-sequences unmatched-cr-97.qz  --p-threads 10
+> qiime vsearch cluster-features-closed-reference --i-table table-deblur.qza --i-sequences rep-seqs-deblur.qza \
+ --i-reference-sequences ./database/silva-138.1-ssu-nr97-seqs-derep.qza \\
+ --p-perc-identity 0.97 --o-clustered-table table-cr-97.qza \\
+ --o-clustered-sequences repseqs-cr-97.qza --o-unmatched-sequences unmatched-cr-97.qz  --p-threads 10
 
 
 
