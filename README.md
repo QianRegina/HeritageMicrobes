@@ -24,7 +24,10 @@
 
 #**Analysis using QIIME2 version 2024.5**
 #inpot data
->qiime tools import  --type 'SampleData[SequencesWithQuality]' --output-path ./demux-single-end.qza  --input-format CasavaOneEightSingleLanePerSampleDirFmt --input-path ./trimm/
+>qiime tools import  --type 'SampleData[SequencesWithQuality]' \
+>--output-path ./demux-single-end.qza  \
+>--input-format CasavaOneEightSingleLanePerSampleDirFmt \
+>--input-path ./trimm/
 
 #Quality filtering with default parameters
 >qiime quality-filter q-score --i-demux demux-single-end.qza --o-filtered-sequences demux_filtered.qza --o-filter-stats demux-filter-stats.qza
